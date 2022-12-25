@@ -1,159 +1,107 @@
-# TOC Project 2020
+# TOC Project 2022
+## 設計主旨
+在完成系上各位教授"精心"為同學們出的各個作業後，總會想要找一些娛樂來犒賞自己，看電影與看動畫不例外就是其中的一個選項。但由於新上映的電影與動畫資訊經常變動，因此製作了一個 line bot 可以讓使用者在當下想看電影或動畫的時候及時獲得最新資訊。
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/dc7fa47fcd809b99d087/maintainability)](https://codeclimate.com/github/NCKU-CCS/TOC-Project-2020/maintainability)
+## 介紹
+### 特色
++ 提供電影、動畫資訊
++ 支援多使用者
++ 爬蟲
++ OpenAI 聊天機器人
+### 基本介紹
+名稱: 教授我好想有時間看電影
+( 首先先幫我加入一下好友，可以使用搜尋ID(記得要打"@")或掃QR Code )
+![](https://i.imgur.com/K0iUG1M.jpg)
+加入好友，按下聊天後即可開始!!
+![](https://i.imgur.com/jHxB8Lr.jpg)
+### 主目錄介紹
+最下方的圖文選單是我們的主選單，在 initial state 的時候，可以透過此圖文選單進行選擇(在其他 state 的時候則無法)
 
-[![Known Vulnerabilities](https://snyk.io/test/github/NCKU-CCS/TOC-Project-2020/badge.svg)](https://snyk.io/test/github/NCKU-CCS/TOC-Project-2020)
+![](https://i.imgur.com/2PC9DiT.jpg)
+* 電影目錄: 點選此按鈕後，即可切換到電影目錄模式，此模式下可搜尋最新上映、即將上映的電影，以及台北票房榜。
+* 動畫目錄: 點選此按鈕後，即可切換到動畫目錄模式，此模式下可搜尋本季新作的動畫，也可以查詢巴哈上的動畫人氣排行、評分排行。
+* 聊天模式: 點選此按鈕後，即可切換到聊天模式，此模式下可以跟 OpenAI 的聊天機器人對話。
 
+### 電影目錄介紹
+在主目錄的時候，選擇電影目錄
+![](https://i.imgur.com/35qfJvY.jpg)
+可以選擇"現在熱映電影"、"即將上映電影"、"台北票房榜"
 
-Template Code for TOC Project 2020
+#### 現在熱映電影
+現在熱映電影會秀出目前上映的四部電影
++ 點我要搜尋其他的: 會在額外找出四部電影
++ 返回電影目錄: 返回到電影目錄 (也就是有"現在熱映電影"、"即將上映電影"、"台北票房榜"的狀態)
 
-A Line bot based on a finite state machine
+![](https://i.imgur.com/gyQzGA1.jpg)
 
-More details in the [Slides](https://hackmd.io/@TTW/ToC-2019-Project#) and [FAQ](https://hackmd.io/s/B1Xw7E8kN)
+現在熱映電影會顯示四部電影，每一部電影都會有 "查看更多" 以及 "觀看預告片" 的選項
++ 查看更多: 會顯示這部電影的詳細資訊
++ 觀看預告片: 會顯示這部電影的預告片
 
-## Setup
+![](https://i.imgur.com/tgrtFTB.jpg)
+#### 即將上映電影
+即將上映電影會秀出即將上映的四部電影
++ 點我要搜尋其他的: 會在額外找出四部電影
++ 返回電影目錄: 返回到電影目錄 (也就是有"現在熱映電影"、"即將上映電影"、"台北票房榜"的狀態)
 
-### Prerequisite
-* Python 3.6
-* Pipenv
-* Facebook Page and App
-* HTTPS Server
+![](https://i.imgur.com/PMLAsFD.jpg)
 
-#### Install Dependency
-```sh
-pip3 install pipenv
+即將上映電影會顯示四部電影，每一部電影都會有 "查看更多" 以及 "觀看預告片" 的選項
++ 查看更多: 會顯示這部電影的詳細資訊
++ 觀看預告片: 會顯示這部電影的預告片
 
-pipenv --three
+![](https://i.imgur.com/feCZty9.jpg)
+#### 台北票房榜
+台北票房榜會秀出票房前三名的電影
+![](https://i.imgur.com/4XE6fIc.jpg)
+每一部電影都會有 "詳細內容" 以及 "預告片" 的選項
++ 詳細內容: 會顯示這部電影的詳細資訊
++ 預告片: 會顯示這部電影的預告片
 
-pipenv install
+### 動畫目錄介紹
+在主目錄的時候，選擇動畫目錄
 
-pipenv shell
-```
+![](https://i.imgur.com/eIUyMFc.jpg)
 
-* pygraphviz (For visualizing Finite State Machine)
-    * [Setup pygraphviz on Ubuntu](http://www.jianshu.com/p/a3da7ecc5303)
-	* [Note: macOS Install error](https://github.com/pygraphviz/pygraphviz/issues/100)
+可以選擇"本季新作"、"人氣排行"、"評分排行"
 
+#### 本季新作
+本季新作會秀出目前本季的四部動畫
++ 點我要搜尋其他的: 會在額外找出四部動畫
++ 返回動畫目錄: 返回到動畫目錄 (也就是有"本季新作"、"人氣排行"、"評分排行"的狀態)
 
-#### Secret Data
-You should generate a `.env` file to set Environment Variables refer to our `.env.sample`.
-`LINE_CHANNEL_SECRET` and `LINE_CHANNEL_ACCESS_TOKEN` **MUST** be set to proper values.
-Otherwise, you might not be able to run your code.
+![](https://i.imgur.com/gkq37sH.jpg)
 
-#### Run Locally
-You can either setup https server or using `ngrok` as a proxy.
+本季新作顯示四部動畫，每一部電影都會有 "詳細內容"
++ 詳細內容: 會顯示這部動畫的詳細資訊
 
-#### a. Ngrok installation
-* [ macOS, Windows, Linux](https://ngrok.com/download)
+#### 人氣排行
+人氣排行會秀出目前巴哈姆特上最高人氣的動畫
++ 點我要搜尋其他的: 會在額外找出四部動畫
++ 返回動畫目錄: 返回到動畫目錄 (也就是有"本季新作"、"人氣排行"、"評分排行"的狀態)
 
-or you can use Homebrew (MAC)
-```sh
-brew cask install ngrok
-```
+![](https://i.imgur.com/n7kzBui.jpg)
 
-**`ngrok` would be used in the following instruction**
+人氣排行顯示四部動畫，每一部電影都會有 "詳細內容"
++ 詳細內容: 會顯示這部動畫的詳細資訊
 
-```sh
-ngrok http 8000
-```
+#### 評分排行
+評分排行會秀出目前巴哈姆特上最高評分的動畫
++ 點我要搜尋其他的: 會在額外找出四部動畫
++ 返回動畫目錄: 返回到動畫目錄 (也就是有"本季新作"、"人氣排行"、"評分排行"的狀態)
 
-After that, `ngrok` would generate a https URL.
+![](https://i.imgur.com/FRvyJJQ.jpg)
 
-#### Run the sever
+評分排行顯示四部動畫，每一部電影都會有 "詳細內容"
++ 詳細內容: 會顯示這部動畫的詳細資訊
 
-```sh
-python3 app.py
-```
+### 聊天模式介紹
 
-#### b. Servo
+在主目錄的時候，選擇聊天模式，即會進入聊天模式。
+聊天模式內，使用者所輸入的文字，會透過 line bot 傳給 OpenAI 的聊天機器人，輸入 "返回主目錄" 就會結束聊天模式。
 
-Or You can use [servo](http://serveo.net/) to expose local servers to the internet.
+![](https://i.imgur.com/iC1F3rI.jpg)
 
+## FSM 圖
 
-## Finite State Machine
-![fsm](./img/show-fsm.png)
-
-## Usage
-The initial state is set to `user`.
-
-Every time `user` state is triggered to `advance` to another state, it will `go_back` to `user` state after the bot replies corresponding message.
-
-* user
-	* Input: "go to state1"
-		* Reply: "I'm entering state1"
-
-	* Input: "go to state2"
-		* Reply: "I'm entering state2"
-
-## Deploy
-Setting to deploy webhooks on Heroku.
-
-### Heroku CLI installation
-
-* [macOS, Windows](https://devcenter.heroku.com/articles/heroku-cli)
-
-or you can use Homebrew (MAC)
-```sh
-brew tap heroku/brew && brew install heroku
-```
-
-or you can use Snap (Ubuntu 16+)
-```sh
-sudo snap install --classic heroku
-```
-
-### Connect to Heroku
-
-1. Register Heroku: https://signup.heroku.com
-
-2. Create Heroku project from website
-
-3. CLI Login
-
-	`heroku login`
-
-### Upload project to Heroku
-
-1. Add local project to Heroku project
-
-	heroku git:remote -a {HEROKU_APP_NAME}
-
-2. Upload project
-
-	```
-	git add .
-	git commit -m "Add code"
-	git push -f heroku master
-	```
-
-3. Set Environment - Line Messaging API Secret Keys
-
-	```
-	heroku config:set LINE_CHANNEL_SECRET=your_line_channel_secret
-	heroku config:set LINE_CHANNEL_ACCESS_TOKEN=your_line_channel_access_token
-	```
-
-4. Your Project is now running on Heroku!
-
-	url: `{HEROKU_APP_NAME}.herokuapp.com/callback`
-
-	debug command: `heroku logs --tail --app {HEROKU_APP_NAME}`
-
-5. If fail with `pygraphviz` install errors
-
-	run commands below can solve the problems
-	```
-	heroku buildpacks:set heroku/python
-	heroku buildpacks:add --index 1 heroku-community/apt
-	```
-
-	refference: https://hackmd.io/@ccw/B1Xw7E8kN?type=view#Q2-如何在-Heroku-使用-pygraphviz
-
-## Reference
-[Pipenv](https://medium.com/@chihsuan/pipenv-更簡單-更快速的-python-套件管理工具-135a47e504f4) ❤️ [@chihsuan](https://github.com/chihsuan)
-
-[TOC-Project-2019](https://github.com/winonecheng/TOC-Project-2019) ❤️ [@winonecheng](https://github.com/winonecheng)
-
-Flask Architecture ❤️ [@Sirius207](https://github.com/Sirius207)
-
-[Line line-bot-sdk-python](https://github.com/line/line-bot-sdk-python/tree/master/examples/flask-echo)
+![](https://i.imgur.com/84H6Ohc.png)
