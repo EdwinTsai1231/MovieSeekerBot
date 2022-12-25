@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from fsm import TocMachine
 from utils import send_text_message, call_openai, send_image_message
 
-main_url = 'https://db98-218-164-22-193.jp.ngrok.io'
+main_url = 'https://MovieSeekerBot.onrender.com'
 
 machine_list = {}
 
@@ -35,7 +35,7 @@ line_bot_api = LineBotApi(channel_access_token)
 parser = WebhookParser(channel_secret)
 
 #pyreq
-@app.route("/", methods=["POST"])
+@app.route("/callback", methods=["POST"])
 def webhook_handler():
     signature = request.headers["X-Line-Signature"]
     # get request body as text
