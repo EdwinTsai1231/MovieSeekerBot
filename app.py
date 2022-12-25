@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from fsm import TocMachine
 from utils import send_text_message, call_openai, send_image_message
 
-main_url = 'https://MovieSeekerBot.onrender.com'
+main_url = 'https://movieseekerbot.onrender.com'
 
 machine_list = {}
 
