@@ -3,7 +3,7 @@ from linebot.models import MessageAction,MessageEvent, TextMessage, TextSendMess
 from linebot.models import PostbackAction,URIAction, CarouselColumn,ImageCarouselColumn, URITemplateAction, MessageTemplateAction
 from spider import SearchMovies, show_hot_movies, search_animations, show_hot_animates
 
-from utils import send_text_message, send_button_message, send_carousel_message
+from utils import send_text_message, send_button_message, send_carousel_message, do_game
 
 search_movies = ['現在熱映電影', '即將上映電影']
 movie_menu_options = ['現在熱映電影', '即將上映電影', '台灣票房榜', '返回主目錄']
@@ -56,6 +56,10 @@ class TocMachine(GraphMachine):
         text = event.message.text
         return text == "本季新作"
 
+    def is_go_to_game_mode(self, event):
+        text = event.message.text
+        return text == "遊戲模式"
+
     def is_back_to_animates_menu(self, event):
         text = event.message.text
         return text == "返回動畫目錄"
@@ -70,7 +74,7 @@ class TocMachine(GraphMachine):
 
     def on_enter_main_menu(self, event):
         reply_token = event.reply_token
-        text = '已返回主目錄:\n請使用底下的主目錄選單選擇: "電影目錄" "動畫目錄" 或 "聊天模式"'
+        text = '已返回主目錄:\n請使用底下的主目錄選單選擇: "電影目錄" "動畫目錄" "聊天模式" "遊戲模式" 或 輸入 "show fsm" 顯示 FSM 圖'
         send_text_message(reply_token, text)
 
     def on_enter_chat_mode(self, event):
@@ -291,3 +295,36 @@ class TocMachine(GraphMachine):
             col.append(carousel_data)
 
         send_carousel_message(reply_token, col)
+    
+    def on_enter_game_mode(self, event):
+        reply_token = event.reply_token
+        title = "歡迎來到猜拳小遊戲\n請輸入'剪刀' '石頭' '布' 來進行猜拳"
+        text = '下方選擇您要出的拳'
+        btn = [
+            MessageTemplateAction(
+                label = '剪刀',
+                text ='剪刀'
+            ),
+            MessageTemplateAction(
+                label = '石頭',
+                text = '石頭'
+            ),
+            MessageTemplateAction(
+                label = '布',
+                text = '布'
+            ),
+            MessageTemplateAction(
+                label = '返回主目錄',
+                text = '返回主目錄'
+            )
+        ]
+        url = 'https://pic.616pic.com/ys_img/01/04/01/V8S3VobDbt.jpg'
+        send_button_message(event.reply_token, title, text, btn, url)
+
+    def is_go_to_do_game(self, event):
+        text = event.message.text
+        return text == '石頭' or text == '剪刀' or text == '布'
+
+    def on_enter_do_game(self, event):
+        do_game(event, event.message.text)
+        self.go_back_game_mode(event)

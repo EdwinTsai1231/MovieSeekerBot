@@ -5,6 +5,7 @@ from linebot import LineBotApi, WebhookParser
 from linebot.models import VideoSendMessage,MessageEvent, TextMessage, TextSendMessage, TemplateSendMessage, ImageCarouselColumn,CarouselTemplate, ImageCarouselTemplate, URITemplateAction, ButtonsTemplate, MessageTemplateAction, ImageSendMessage
 from linebot.models import ImageCarouselColumn, URITemplateAction, MessageTemplateAction
 import openai
+import random
 
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 
@@ -87,3 +88,32 @@ def call_openai(event):
     completed_text = response["choices"][0]["text"].replace('\n', '')
     
     return completed_text   
+
+
+def do_game(event, text):
+    if text == '石頭':
+        ran = random.randint(1, 3)
+        if (ran == 2):
+            send_text_message(event.reply_token, '剪刀\n你贏了!')
+        elif (ran == 3):
+            send_text_message(event.reply_token, '布\n我贏了!')
+        else:
+            send_text_message(event.reply_token, '石頭\n平手')
+    elif text == '剪刀':
+        ran = random.randint(1, 3)
+        if (ran == 3):
+            send_text_message(event.reply_token, '布\n你贏了!')
+        elif (ran == 1):
+            send_text_message(event.reply_token, '石頭\n我贏了!')
+        else:
+            send_text_message(event.reply_token, '剪刀\n平手')
+    elif text == '布':
+        ran = random.randint(1, 3)
+        if (ran == 1):
+            send_text_message(event.reply_token, '石頭\n你贏了!')
+        elif (ran == 2):
+            send_text_message(event.reply_token, '剪刀\n我贏了!')
+        else:
+            send_text_message(event.reply_token, '布\n平手')
+    
+    return True

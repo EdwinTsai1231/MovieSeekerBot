@@ -16,8 +16,6 @@ main_url = 'https://movieseekerbot.onrender.com'
 
 machine_list = {}
 
-
-
 app = Flask(__name__, static_url_path="")
 load_dotenv()
 
@@ -62,7 +60,7 @@ def webhook_handler():
             states=["main_menu",
                     "movie_menu", "search_movies", "movie_leaderboard",
                     "animates_menu", "new_animates", "hot_animates",
-                    "chat_mode"],
+                    "chat_mode", "game_mode", "do_game"],
             transitions=[
                 {
                     "trigger": "advance",
@@ -156,6 +154,25 @@ def webhook_handler():
                     "source": "chat_mode",
                     "dest": "main_menu",
                     "conditions": "is_back_to_main_menu",
+                },{
+                    "trigger": "advance",
+                    "source": "main_menu",
+                    "dest": "game_mode",
+                    "conditions": "is_go_to_game_mode",
+                },{
+                    "trigger": "advance",
+                    "source": "game_mode",
+                    "dest": "main_menu",
+                    "conditions": "is_back_to_main_menu",
+                },{
+                    "trigger": "advance",
+                    "source": "game_mode",
+                    "dest": "do_game",
+                    "conditions": "is_go_to_do_game",
+                },{
+                    "trigger": "go_back_game_mode",
+                    "source": "do_game",
+                    "dest": "game_mode",
                 }
             ],
             initial="main_menu",
@@ -171,7 +188,7 @@ def webhook_handler():
         elif machine_list[event.source.user_id].state == 'chat_mode' and event.message.text != '返回主目錄':
             text = call_openai(event)
         elif machine_list[event.source.user_id].state == 'main_menu':
-            text = '請使用底下的主目錄選單選擇:\n"電影目錄" "動畫目錄" "聊天模式" 或是輸入 "show fsm" 顯示 FSM 圖'
+            text = '請使用底下的主目錄選單選擇:\n"電影目錄" "動畫目錄" "聊天模式" "遊戲模式"或是輸入 "show fsm" 顯示 FSM 圖'
         elif machine_list[event.source.user_id].state == 'search_movies':
             text = '請點選 "點我要搜尋其他的" 或 "返回電影目錄"'
         elif machine_list[event.source.user_id].state == 'movie_leaderboard':
@@ -190,7 +207,7 @@ def webhook_handler():
 
 @app.route("/show-fsm", methods=["GET"])
 def show_fsm():
-    # machine_list[event.source.user_id].get_graph().draw("fsm.png", prog="dot", format="png")
+    # machine.get_graph().draw("fsm.png", prog="dot", format="png")
     return send_file("fsm.png", mimetype="image/png")
 
 
