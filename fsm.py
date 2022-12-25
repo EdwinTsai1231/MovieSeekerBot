@@ -8,6 +8,7 @@ from utils import send_text_message, send_button_message, send_carousel_message,
 search_movies = ['現在熱映電影', '即將上映電影']
 movie_menu_options = ['現在熱映電影', '即將上映電影', '台灣票房榜', '返回主目錄']
 animates_menu_options = ['本季新作', '人氣排行', '評分排行', '返回主目錄']
+game_mode_options = ['剪刀', '石頭', '布', '返回主目錄']
 
 class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
@@ -23,6 +24,10 @@ class TocMachine(GraphMachine):
         return text == '電影目錄'
 
     def type_other_options_in_movie_menu(self, event):
+        text = event.message.text
+        return not text in movie_menu_options
+
+    def type_other_options_in_game_mode(self, event):
         text = event.message.text
         return not text in movie_menu_options
 
